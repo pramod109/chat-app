@@ -30,7 +30,7 @@ class UserRooms{
     addUserRoom(roomName){
         if(!this.userRooms.find(room => room.name === roomName)){
             this.userRooms.push({
-                name: 'roomName',
+                name: roomName,
                 users: [],
                 messages: []
             })
@@ -48,11 +48,11 @@ class UserRooms{
     }
 
     addUser(userName, roomName){
-        const room = this.userRooms.find(room => room.name === roomName);
-
-        if(!room.users.find(user => user === userName)){
-            room.users.push(userName);
-        }
+        var room = this.userRooms.find(room => room.name === roomName);
+        room.users.push(userName);
+        // if(!room.users.find(user => user === userName)){
+        //     room.users.push(userName);
+        // }
     }
 
     removeUser(userName, roomName){
