@@ -21,7 +21,7 @@ $(function () {
     })
 
     $('#chatId').submit(function(){
-        var msg = $('#chat').val();
+        var msg = thisUserRoom + ':' + $('#chat').val();
         socket.emit('chat message', 
         {
             roomName: thisUserRoom, 

@@ -18,7 +18,7 @@ const user_rooms = new UserRooms();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(clientPath));
 app.use('/client-register', express.static(path.join(clientPath, 'client-pages', 'add-room')));
-app.use('/client-chat', express.static(path.join(clientPath, 'client-pages', 'client-chat')));
+app.use('/admin-chat', express.static(path.join(clientPath, 'admin-pages', 'admin-chat')));
 
 app.get('/', function(req,res){
 	res.sendFile(path.join(clientPath, 'index.html'));
@@ -32,8 +32,12 @@ io.on('connection', function(socket){
 	});
 	
 	socket.on('chat message', function(data){
-		// const userRoom = data.room;
+		
+		const room = user_rooms.getUserRoom(data.roomName);
+		room.messages.push(data.message);
 		io.emit('chat message', data);
+		console.log(user_rooms.getUserRooms());
+		
 	});
 
 	socket.on('create room', function(roomName){
@@ -41,9 +45,15 @@ io.on('connection', function(socket){
 		// socket.room = roomName;
 		user_rooms.addUserRoom(roomName);
 		user_rooms.addUser(roomName, roomName);
-		io.emit('update user rooms', user_rooms.getUserRooms());
+		io.emit('update user rooms', roomName);
 		console.log(user_rooms.getUserRooms());
 	})
+
+	socket.on('get messages', function(roomName){
+		const room = user_rooms.getUserRoom(roomName);
+		io.emit('update user messages', room.messages);
+		console.log(room.messages);
+	});
 });
 
 app.get('/client-register', function(req, res){
@@ -51,10 +61,7 @@ app.get('/client-register', function(req, res){
 });
 
 
-app.get('/admin', function(req, res){
-	// res.send(user_rooms.getUserRooms());
-	// console.log("Printing rooms...");
-	// console.log(user_rooms.getUserRooms());
+app.get('/admin-chat', function(req, res){
 	res.sendFile(path.join(clientPath, 'admin-pages', 'admin-chat', 'admin-chat.html'));
 });
 

@@ -7,22 +7,29 @@ Reference: https://socket.io/get-started/chat/
 <html>
     <head>
         <title>Chat App | Admin Chat</title>
+    
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+        <script src="./admin-chat.js"></script>
+        <link rel="stylesheet" href="./admin-chat.css">
+
     </head>
     <body>
         <div>
             <h3>List of Users</h3>
-            <ul>
-                <li>User 1</li>
-                <li>User 2</li>
+            <ul id="userList">
+                
             </ul>
         </div>
 
         <div>
-            <ul id="messages"></ul>
-            <form action="">
-                <input id="m" autocomplete="off" />
+            <ul id="admin-messages"></ul>
+            <form action="" id="adminChatId">
+                <input id="a-chat" autocomplete="off" />
                 <button>Send</button>
             </form>
+
         </div>
+
     </body>
 </html>
