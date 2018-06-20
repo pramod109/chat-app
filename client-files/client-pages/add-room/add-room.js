@@ -1,12 +1,12 @@
 $(function () {
-    var thisUser;
+    var thisUserRoom;
 
     var socket = io();
     $('#addRoomId').submit(function () {
         socket.emit('create room', $('#m').val());
-        thisUser = $('#m').val();
+        thisUserRoom = $('#m').val();
         $('#m').val('');
-        console.log(thisUser);
+        console.log(thisUserRoom);
         var addRoom = document.getElementById("addRoom");
         var clientChat = document.getElementById("clientChat");
         addRoom.style.display = "none";
@@ -14,12 +14,19 @@ $(function () {
         return false;
     });
 
-    socket.on('chat message', function (msg) {
-        $('#messages').append($('<li>').text(msg));
+    socket.on('chat message', function (data) {
+        if(data.roomName === thisUserRoom){
+            $('#messages').append($('<li>').text(data.message));
+        }
     })
 
     $('#chatId').submit(function(){
-        socket.in(thisUser).emit('chat message', $('#chat').val());
+        var msg = $('#chat').val();
+        socket.emit('chat message', 
+        {
+            roomName: thisUserRoom, 
+            message: msg
+        });
         $('#chat').val('');
         return false;
     })

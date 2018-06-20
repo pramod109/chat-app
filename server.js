@@ -31,13 +31,14 @@ io.on('connection', function(socket){
 		console.log("User disconnected...")
 	});
 	
-	socket.on('chat message', function(msg){
-		io.emit('chat message', msg);
+	socket.on('chat message', function(data){
+		// const userRoom = data.room;
+		io.emit('chat message', data);
 	});
 
 	socket.on('create room', function(roomName){
-		socket.join(roomName);
-		socket.room = roomName;
+		// socket.join(roomName);
+		// socket.room = roomName;
 		user_rooms.addUserRoom(roomName);
 		user_rooms.addUser(roomName, roomName);
 		io.emit('update user rooms', user_rooms.getUserRooms());
