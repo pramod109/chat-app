@@ -37,12 +37,10 @@ io.on('connection', function(socket){
 		room.messages.push(data.message);
 		io.emit('chat message', data);
 		console.log(user_rooms.getUserRooms());
-		
+
 	});
 
 	socket.on('create room', function(roomName){
-		// socket.join(roomName);
-		// socket.room = roomName;
 		user_rooms.addUserRoom(roomName);
 		user_rooms.addUser(roomName, roomName);
 		io.emit('update user rooms', roomName);
