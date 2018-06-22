@@ -40,10 +40,14 @@ io.on('connection', function(socket){
 
 	});
 
+	socket.on('get users', function(){
+		io.emit('update user rooms admin',user_rooms.getUserRooms());
+	})
+
 	socket.on('create room', function(roomName){
 		user_rooms.addUserRoom(roomName);
 		user_rooms.addUser(roomName, roomName);
-		io.emit('update user rooms', roomName);
+		io.emit('update user rooms', user_rooms.getUserRooms());
 		console.log(user_rooms.getUserRooms());
 	})
 
@@ -63,4 +67,4 @@ app.get('/admin-chat', function(req, res){
 	res.sendFile(path.join(clientPath, 'admin-pages', 'admin-chat', 'admin-chat.html'));
 });
 
-server.listen(3000,()=>{console.log('Server active...')});
+server.listen(3001,()=>{console.log('Server active on 3001...')});

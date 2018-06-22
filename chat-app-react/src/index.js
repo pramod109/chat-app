@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ChatApp from './components/ChatApp';
+import HomePage from './components/HomePage';
 
-
-ReactDOM.render(<ChatApp />, document.getElementById('app_root'));
+ReactDOM.render(<HomePage />, document.getElementById('app_root'));
 
