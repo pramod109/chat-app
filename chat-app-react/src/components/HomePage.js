@@ -23,11 +23,11 @@ class HomePage extends React.Component{
         const currStatus = this.state.currStatus;
 
         if(currStatus === 'client'){
-            return <ClientRegister />
+            return <NewClientRegisterAuth />
         }
 
         if(currStatus === 'admin'){
-            return <AdminChat />
+            return <OldAdminLoginAuth />
         }
 
         return(

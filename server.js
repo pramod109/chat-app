@@ -9,20 +9,130 @@ const path = require('path');
 const app = require('express')();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-const clientPath = path.join(__dirname, 'client-files');
 const express = require('express');
 const { UserRooms } = require('./UserRooms');
 const bodyParser = require('body-parser');
 const user_rooms = new UserRooms();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(clientPath));
-app.use('/client-register', express.static(path.join(clientPath, 'client-pages', 'add-room')));
-app.use('/admin-chat', express.static(path.join(clientPath, 'admin-pages', 'admin-chat')));
+const morgan = require('morgan');
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const config = require('./config');
+const user = require('./models/user');
 
-app.get('/', function(req,res){
-	res.sendFile(path.join(clientPath, 'index.html'));
+
+mongoose.connect(config.database, () => {
+	console.log('Successfully connected to mongodb database...');
 });
+
+app.set('superSecret', config.secret);
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(morgan('dev'));
+
+const apiRoutes = express.Router();
+
+//route to /authenticate
+
+apiRoutes.post('/authenticate', function(req, res) {
+
+	user.findOne({
+		name: req.body.name
+	}, function(err, user) {
+		if(err) throw err;
+
+		if(!user) {
+			res.json({success:false, message: 'Authentication failed, User not found'});
+		}
+		else if(user) {
+			if(user.password != req.body.password) {
+				res.json({success: false, message: 'Authentication failed, invalid password'});
+			}
+			else {
+				const payload = {
+					admin: user.admin
+				};
+
+				var token = jwt.sign(payload, app.get('superSecret'), {
+					expiresIn : 1440
+				});
+
+				res.json({
+					success: true,
+					message: 'Please use this token',
+					token: token
+				});
+			}
+		}
+	});
+});
+
+//route middleware to verify a token
+
+apiRoutes.use(function(req, res, next) {
+
+	//check header or url params or post params for token
+	var token = req.body.token || req.query.token || req.header['x-access-token'];
+
+	//decode the token
+	if(token){
+		//verify secret and check exp
+		jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+			if(err){
+				return res.json({success: false, message: 'Failed to authenticate token'});
+			}
+			else {
+				//if everything is good, save to request for use in other routes
+				req.decoded = decoded;
+				next();
+			}
+		});
+	}
+	else {
+		//if there is no token, return an error
+		return res.status(403).send({
+			success: false,
+			message: 'No token provided'
+		});
+	}
+});
+
+apiRoutes.get('/', function(req, res) {
+	res.json({ message: 'welcome to the chap app api service' })
+});
+
+apiRoutes.get('/users', function(req,res) {
+	user.find({}, function(err, users) {
+		res.json(users);
+	});
+});
+
+apiRoutes.post('/test', function(req, res) {
+	res.send(req.body);
+})
+
+
+
+app.get('/', function(req, res) {
+	res.send('Welcome to the chat app...')
+});
+
+app.get('/setup', function(req, res) {
+
+	var pramod = new user({
+		name: 'pramod hanagandi',
+		password: 'pramod123',
+		admin: true
+	});
+
+	pramod.save(function(err){
+		if(err) throw err;
+		console.log('User saved successfully...');
+		res.json({ success:true });
+	})
+});
+
+
 
 io.on('connection', function(socket){
 	console.log("A user connected...")
@@ -58,13 +168,13 @@ io.on('connection', function(socket){
 	});
 });
 
-app.get('/client-register', function(req, res){
-	res.sendFile(path.join(clientPath, 'client-pages', 'add-room', 'add-room.html'));
-});
+/* 
+{
+    "success": true,
+    "message": "Please use this token",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTI5Njk5NjkyLCJleHAiOjE1Mjk3MDExMzJ9.N0GztvpHI7uGN8de6erImUlFcdsBA0RSuQ6LfBUqryE"
+}
 
-
-app.get('/admin-chat', function(req, res){
-	res.sendFile(path.join(clientPath, 'admin-pages', 'admin-chat', 'admin-chat.html'));
-});
-
-server.listen(3001,()=>{console.log('Server active on 3001...')});
+*/
+app.use('/api', apiRoutes);
+server.listen(3000,()=>{console.log('Server active on 3000...')});
