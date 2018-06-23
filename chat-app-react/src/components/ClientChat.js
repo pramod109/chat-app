@@ -1,5 +1,6 @@
 import React from 'react';
 import { socketEmit, socketOn } from '../helpers/socketEvents';
+import axios from 'axios';
 
 class ClientChat extends React.Component{
     constructor(){
@@ -8,7 +9,7 @@ class ClientChat extends React.Component{
         this.state = {
             messages: []
         };
-
+        var self = this;
         socketOn.chatMessage((data) => {
 
             if(data.roomName === this.props.userName){
@@ -23,9 +24,17 @@ class ClientChat extends React.Component{
             
             const userMessage = this.props.userName + ' : ' + e.target.elements.userMessage.value.trim();
 
-            socketEmit.chatMessage({roomName:this.props.userName,message:userMessage}, (err) => {
+            axios.post('http://localhost:3001/verify', {token:this.props.token})
+                .then((res) => {
+                    console.log(res);
+                    socketEmit.chatMessage({roomName:this.props.userName,message:userMessage}, (err) => {
                 
-            });
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
+                }
+            )
 
             e.target.elements.userMessage.value = '';
         };
@@ -34,7 +43,7 @@ class ClientChat extends React.Component{
     render(){
         const thisMessages = this.state.messages;
         const messageList = thisMessages.map((message) => 
-            <li>{message}</li>
+            <li key={message.toString()}>{message}</li>
         )
 
         return (

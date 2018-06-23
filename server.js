@@ -53,7 +53,7 @@ app.post('/registerNewClient', function(req, res) {
 });
 //route to /authenticate
 
-apiRoutes.post('/authenticate', function(req, res) {
+app.post('/authenticate', function(req, res) {
 
 	user.findOne({
 		name: req.body.name
@@ -88,10 +88,14 @@ apiRoutes.post('/authenticate', function(req, res) {
 
 //route middleware to verify a token
 
-apiRoutes.use(function(req, res, next) {
+/*apiRoutes.use(function(req, res, next) {
+
+});*/
+
+app.post('/verify', function(req, res) {
 
 	//check header or url params or post params for token
-	var token = req.body.token || req.query.token || req.header['x-access-token'];
+	var token = req.body.token;
 
 	//decode the token
 	if(token){
@@ -102,8 +106,9 @@ apiRoutes.use(function(req, res, next) {
 			}
 			else {
 				//if everything is good, save to request for use in other routes
-				req.decoded = decoded;
-				next();
+				// req.decoded = decoded;
+				// next();
+				return res.json({success: true});
 			}
 		});
 	}
@@ -114,10 +119,7 @@ apiRoutes.use(function(req, res, next) {
 			message: 'No token provided'
 		});
 	}
-});
 
-apiRoutes.get('/', function(req, res) {
-	res.json({ message: 'welcome to the chap app api service' })
 });
 
 apiRoutes.get('/users', function(req,res) {

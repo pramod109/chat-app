@@ -1,5 +1,6 @@
 import React from 'react';
 import { socketEmit, socketOn } from '../helpers/socketEvents';
+import axios from 'axios';
 
 class AdminChat extends React.Component{
     constructor(){
@@ -45,9 +46,21 @@ class AdminChat extends React.Component{
 
             const adminMessage = 'Admin : ' + e.target.elements.adminMessage.value.trim();
 
-            socketEmit.chatMessage({roomName:this.state.roomName, message: adminMessage}, (err) => {
+            axios.post('http://localhost:3001/verify', {token:this.props.token})
+                .then((res) => {
+                    console.log(res);
+                    socketEmit.chatMessage({roomName:this.state.roomName,message:adminMessage}, (err) => {
+                        console.log(err);
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
+                }
+            )
 
-            });
+            // socketEmit.chatMessage({roomName:this.state.roomName, message: adminMessage}, (err) => {
+
+            // });
 
             e.target.elements.adminMessage.value = '';
         }
