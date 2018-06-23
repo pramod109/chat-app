@@ -1,6 +1,6 @@
 import React from 'react';
-import ClientRegister from './ClientRegister';
-import AdminChat from './AdminChat';
+import NewClientRegisterAuth from './NewClientRegisterAuth';
+import OldAdminLoginAuth from './OldAdminLoginAuth';
 
 class HomePage extends React.Component{
     constructor(props){

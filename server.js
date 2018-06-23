@@ -19,7 +19,7 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('./config');
 const user = require('./models/user');
-
+const cors = require('cors');
 
 mongoose.connect(config.database, () => {
 	console.log('Successfully connected to mongodb database...');
@@ -32,6 +32,25 @@ app.use(morgan('dev'));
 
 const apiRoutes = express.Router();
 
+// app.use(function(req, res, next) {
+// 	res.setHeader('Access-Control-Allow-Origin','*')
+// })
+app.use(cors());
+
+app.post('/registerNewClient', function(req, res) {
+
+	var newClient = new user({
+		name: req.body.name,
+		password: req.body.password,
+		admin: false
+	});
+
+	newClient.save(function(err){
+		if(err) throw err;
+		console.log('New client saved successfully...');
+		res.send('New user registered successfully...')
+	})
+});
 //route to /authenticate
 
 apiRoutes.post('/authenticate', function(req, res) {
@@ -112,27 +131,9 @@ apiRoutes.post('/test', function(req, res) {
 })
 
 
-
 app.get('/', function(req, res) {
 	res.send('Welcome to the chat app...')
 });
-
-app.get('/setup', function(req, res) {
-
-	var pramod = new user({
-		name: 'pramod hanagandi',
-		password: 'pramod123',
-		admin: true
-	});
-
-	pramod.save(function(err){
-		if(err) throw err;
-		console.log('User saved successfully...');
-		res.json({ success:true });
-	})
-});
-
-
 
 io.on('connection', function(socket){
 	console.log("A user connected...")
@@ -168,13 +169,5 @@ io.on('connection', function(socket){
 	});
 });
 
-/* 
-{
-    "success": true,
-    "message": "Please use this token",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiaWF0IjoxNTI5Njk5NjkyLCJleHAiOjE1Mjk3MDExMzJ9.N0GztvpHI7uGN8de6erImUlFcdsBA0RSuQ6LfBUqryE"
-}
-
-*/
 app.use('/api', apiRoutes);
-server.listen(3000,()=>{console.log('Server active on 3000...')});
+server.listen(3001,()=>{console.log('Server active on 3000...')});
