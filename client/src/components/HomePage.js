@@ -1,3 +1,8 @@
+/* 
+Developed by Pramod Hanagandi -[pramod109.github.io]
+This is the component to handle main page of the chat app
+*/
+
 import React from 'react';
 import NewClientRegisterAuth from './NewClientRegisterAuth';
 import OldAdminLoginAuth from './OldAdminLoginAuth';

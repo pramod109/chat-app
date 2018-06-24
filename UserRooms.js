@@ -1,3 +1,8 @@
+/* 
+Developed by Pramod Hanagandi -[pramod109.github.io]
+This is the UserRooms class to hold data for each user chatroom
+*/
+
 class UserRooms{
     constructor(){
         this.userRooms = [

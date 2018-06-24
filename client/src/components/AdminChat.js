@@ -1,3 +1,8 @@
+/* 
+Developed by Pramod Hanagandi -[pramod109.github.io]
+This is the component to display and handle admin chat
+*/
+
 import React from 'react';
 import { socketEmit, socketOn } from '../helpers/socketEvents';
 import axios from 'axios';
@@ -46,7 +51,7 @@ class AdminChat extends React.Component{
 
             const adminMessage = 'Admin : ' + e.target.elements.adminMessage.value.trim();
 
-            axios.post('http://localhost:3001/verify', {token:this.props.token})
+            axios.post('/verify', {token:this.props.token})
                 .then((res) => {
                     console.log(res);
                     socketEmit.chatMessage({roomName:this.state.roomName,message:adminMessage}, (err) => {

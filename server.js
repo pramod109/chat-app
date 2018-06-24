@@ -1,7 +1,6 @@
 /* 
 Developed by Pramod Hanagandi -[pramod109.github.io]
 This page handles the backend requests for the chat application
-Reference: https://socket.io/get-started/chat/
 */
 
 const app = require('express')();
@@ -35,24 +34,26 @@ app.use(cors());
 //Route to register new client
 app.post('/registerNewClient', function(req, res) {
 
-	const client = user.findOne({name: req.body.name});
-	if (client) {
-		res.json({success: false});
-	} 
-	else {
-		const hash_password = bcrypt.hashSync(req.body.password, 8);
-		var newClient = new user({
-			name: req.body.name,
-			password: hash_password,
-			admin: false
-		});
-		newClient.save(function (err) {
-			if (err) throw err;
-			console.log('New client saved successfully...');
-			res.send('New user registered successfully...')
-		})
-	}
+	user.findOne({name: req.body.name}, function (err, data) {
+		if(err) throw err;
 
+		if (!data) {
+			const hash_password = bcrypt.hashSync(req.body.password, 8);
+			var newClient = new user({
+				name: req.body.name,
+				password: hash_password,
+				admin: false
+			});
+			newClient.save(function (err) {
+				if (err) throw err;
+				console.log('New client saved successfully...');
+				res.json({ success: true })
+			})
+		}
+		else if(data){
+			res.json({success: false});
+		}
+	})
 });
 
 //Route to authenticate old user (admin OR client)
@@ -67,7 +68,7 @@ app.post('/authenticate', function(req, res) {
 			res.json({success:false, message: 'Authentication failed, User not found'});
 		}
 		else if(user) {
-			//bcrypt.compareSync(req.body.password,user.password)
+			
 			if(!bcrypt.compareSync(req.body.password,user.password)) {
 				res.json({success: false, message: 'Authentication failed, invalid password'});
 			}
@@ -91,14 +92,9 @@ app.post('/authenticate', function(req, res) {
 });
 
 //route middleware to verify a token
-
-/*apiRoutes.use(function(req, res, next) {
-
-});*/
-
 app.post('/verify', function(req, res) {
 
-	//check header or url params or post params for token
+	//check post params for token
 	var token = req.body.token;
 
 	//decode the token
@@ -110,8 +106,6 @@ app.post('/verify', function(req, res) {
 			}
 			else {
 				//if everything is good, save to request for use in other routes
-				// req.decoded = decoded;
-				// next();
 				return res.json({success: true});
 			}
 		});
@@ -123,24 +117,9 @@ app.post('/verify', function(req, res) {
 			message: 'No token provided'
 		});
 	}
-
 });
 
-apiRoutes.get('/users', function(req,res) {
-	user.find({}, function(err, users) {
-		res.json(users);
-	});
-});
-
-apiRoutes.post('/test', function(req, res) {
-	res.send(req.body);
-})
-
-
-app.get('/', function(req, res) {
-	res.send('Welcome to the chat app...')
-});
-
+//socket connections and events
 io.on('connection', function(socket){
 	console.log("A user connected...")
 	
@@ -154,7 +133,6 @@ io.on('connection', function(socket){
 		room.messages.push(data.message);
 		io.emit('chat message', data);
 		console.log(user_rooms.getUserRooms());
-
 	});
 
 	socket.on('get users', function(){
@@ -175,5 +153,4 @@ io.on('connection', function(socket){
 	});
 });
 
-app.use('/api', apiRoutes);
-server.listen(3001,()=>{console.log('Server active on 3000...')});
+server.listen(3001,()=>{console.log('Server active on 3001...')});

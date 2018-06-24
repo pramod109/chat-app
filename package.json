@@ -4,7 +4,10 @@
   "description": "A simple chat application",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "cd client && yarn start",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "author": "Pramod Hanagandi",
   "license": "MIT",
@@ -21,6 +24,7 @@
     "socket.io": "^2.1.1"
   },
   "devDependencies": {
+    "concurrently": "^3.6.0",
     "morgan": "^1.9.0"
   }
 }

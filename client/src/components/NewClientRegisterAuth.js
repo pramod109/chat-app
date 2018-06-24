@@ -1,3 +1,8 @@
+/* 
+Developed by Pramod Hanagandi -[pramod109.github.io]
+This is the component to handle new client registrations
+*/
+
 import React from 'react';
 import axios from 'axios';
 import OldClientLoginAuth from './OldClientLoginAuth';
@@ -22,7 +27,7 @@ class NewClientRegisterAuth extends React.Component{
                 password: password
             }
 
-            axios.post('http://localhost:3001/registerNewClient', postData)
+            axios.post('/registerNewClient', postData)
                 .then( (res) => {
                     console.log(res);
                     console.log(res.success);

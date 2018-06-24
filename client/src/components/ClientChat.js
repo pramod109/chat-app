@@ -1,3 +1,8 @@
+/* 
+Developed by Pramod Hanagandi -[pramod109.github.io]
+This is the component to display and handle client chat
+*/
+
 import React from 'react';
 import { socketEmit, socketOn } from '../helpers/socketEvents';
 import axios from 'axios';
@@ -9,7 +14,7 @@ class ClientChat extends React.Component{
         this.state = {
             messages: []
         };
-        var self = this;
+        
         socketOn.chatMessage((data) => {
 
             if(data.roomName === this.props.userName){
@@ -24,7 +29,7 @@ class ClientChat extends React.Component{
             
             const userMessage = this.props.userName + ' : ' + e.target.elements.userMessage.value.trim();
 
-            axios.post('http://localhost:3001/verify', {token:this.props.token})
+            axios.post('/verify', {token:this.props.token})
                 .then((res) => {
                     console.log(res);
                     socketEmit.chatMessage({roomName:this.props.userName,message:userMessage}, (err) => {

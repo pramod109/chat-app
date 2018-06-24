@@ -1,3 +1,8 @@
+/* 
+Developed by Pramod Hanagandi -[pramod109.github.io]
+This is the component to handle old admin auth
+*/
+
 import React from 'react';
 import axios from 'axios';
 import AdminChat from './AdminChat';
@@ -21,16 +26,22 @@ class OldAdminLoginAuth extends React.Component{
                 password: password
             }
 
-            axios.post('http://localhost:3001/authenticate', postData)
+            axios.post('/authenticate', postData)
                 .then((res) => {
                     console.log(res);
-                    self.setState({authorized: true, token: res.data.token, userName:username});
+                    if(res.data.success){
+                        self.setState({authorized: true, token: res.data.token, userName:username});
+                    }else{
+                        alert("Wrong username/password combination!!!")
+                    }
+                    
                     console.log(self.state.authorized);
                     console.log(self.state.token);
                     console.log(self.state.userName);
                 }) 
                 .catch((err) => {
                     console.log(err);
+                    
                 }
             )
         }
