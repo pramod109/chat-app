@@ -25,7 +25,13 @@ class NewClientRegisterAuth extends React.Component{
             axios.post('http://localhost:3001/registerNewClient', postData)
                 .then( (res) => {
                     console.log(res);
-                    self.setState({isOldClient: true});
+                    console.log(res.success);
+                    if(res.data.success){
+                        self.setState({isOldClient: true});
+                    }else{
+                        alert("Please choose a unique name. This name is already taken...")
+                    }
+                    
                 })
                 .catch(function(err) {
                     console.log(err);

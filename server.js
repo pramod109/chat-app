@@ -4,8 +4,6 @@ This page handles the backend requests for the chat application
 Reference: https://socket.io/get-started/chat/
 */
 
-const http = require('http');
-const path = require('path');
 const app = require('express')();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
@@ -20,6 +18,7 @@ const jwt = require('jsonwebtoken');
 const config = require('./config');
 const user = require('./models/user');
 const cors = require('cors');
+const bcrypt = require('bcrypt');
 
 mongoose.connect(config.database, () => {
 	console.log('Successfully connected to mongodb database...');
@@ -31,28 +30,32 @@ app.use(bodyParser.json());
 app.use(morgan('dev'));
 
 const apiRoutes = express.Router();
-
-// app.use(function(req, res, next) {
-// 	res.setHeader('Access-Control-Allow-Origin','*')
-// })
 app.use(cors());
 
+//Route to register new client
 app.post('/registerNewClient', function(req, res) {
 
-	var newClient = new user({
-		name: req.body.name,
-		password: req.body.password,
-		admin: false
-	});
+	const client = user.findOne({name: req.body.name});
+	if (client) {
+		res.json({success: false});
+	} 
+	else {
+		const hash_password = bcrypt.hashSync(req.body.password, 8);
+		var newClient = new user({
+			name: req.body.name,
+			password: hash_password,
+			admin: false
+		});
+		newClient.save(function (err) {
+			if (err) throw err;
+			console.log('New client saved successfully...');
+			res.send('New user registered successfully...')
+		})
+	}
 
-	newClient.save(function(err){
-		if(err) throw err;
-		console.log('New client saved successfully...');
-		res.send('New user registered successfully...')
-	})
 });
-//route to /authenticate
 
+//Route to authenticate old user (admin OR client)
 app.post('/authenticate', function(req, res) {
 
 	user.findOne({
@@ -64,7 +67,8 @@ app.post('/authenticate', function(req, res) {
 			res.json({success:false, message: 'Authentication failed, User not found'});
 		}
 		else if(user) {
-			if(user.password != req.body.password) {
+			//bcrypt.compareSync(req.body.password,user.password)
+			if(!bcrypt.compareSync(req.body.password,user.password)) {
 				res.json({success: false, message: 'Authentication failed, invalid password'});
 			}
 			else {
