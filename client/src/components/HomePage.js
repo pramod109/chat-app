@@ -38,10 +38,20 @@ class HomePage extends React.Component{
         return(
             <div>
                 <title>Chat App | Home</title>
-                <h1>This is the Home Page</h1>
-                <h3>Please choose one:</h3>
-                <button onClick = {this.handleClientClick}>Client</button>
-                <button onClick = {this.handleAdminClick}>Admin</button>
+                <nav className="navbar navbar-dark bg-dark">
+                    <a className="navbar-brand" style={{color:'white'}}>Chat App</a>
+                </nav>
+                <div className="container">
+
+                    <div className="row justify-content-center">
+                        <h3>Please choose one:</h3>
+                    </div>
+                    <div className="row justify-content-center">
+                        <button type="button" className="btn btn-primary btn-lg" onClick={this.handleClientClick}>Client</button>
+                        <button type="button" className="btn btn-primary btn-lg" onClick={this.handleAdminClick}>Admin</button>
+                    </div>
+
+                </div>
             </div>
         );
     }

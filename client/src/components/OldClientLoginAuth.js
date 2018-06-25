@@ -24,7 +24,8 @@ class OldClientLoginAuth extends React.Component{
 
             const postData = {
                 name: username,
-                password: password
+                password: password,
+                isAdmin: false
             }
 
             axios.post('/authenticate', postData)
@@ -35,9 +36,10 @@ class OldClientLoginAuth extends React.Component{
 
                         socketEmit.createRoom(self.state.userName, (err) => {
                             this.setState({error: err});
+                
                         })
                     }else{
-                        alert("Wrong username/password combination!!!")
+                        alert(res.data.message)
                     }                    
                     console.log(self.state.authorized);
                     console.log(self.state.token);
@@ -59,12 +61,21 @@ class OldClientLoginAuth extends React.Component{
 
         return (
             <div>
-                <h2>This is the old client login page</h2>
-                <div>
+                <title>Chat App | Client Login</title>
+                <nav className="navbar navbar-dark bg-dark">
+                    <a className="navbar-brand" style={{ color: 'white' }}>Chat App | Client Login</a>
+                </nav>
+                <div className="container">
                     <form onSubmit={this.loginOldClient}>
-                        <input type="text" name="username" placeholder="Name" autoFocus />
-                        <input type="password" name="password" placeholder="Password" />
-                        <button type="submit">Login</button>
+                        <div className="row justify-content-center">
+                            <input type="text" name="username" placeholder="Name" autoFocus  />
+                        </div>
+                        <div className="row justify-content-center">
+                            <input type="password" name="password" placeholder="Password" />
+                        </div>
+                        <div className="row justify-content-center">
+                            <button className="btn btn-success" type="submit">Login</button>
+                        </div>
                     </form>
                 </div>
             </div>

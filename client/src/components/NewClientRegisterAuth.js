@@ -52,16 +52,33 @@ class NewClientRegisterAuth extends React.Component{
 
         return (
             <div>
-                <h2>This is the NewClientRegisterAuth page</h2>
-                <h3>Click here if you are already a user</h3>
-                <button onClick={this.goToLogin}>Login</button>
-                <h2>New Users Register Below</h2>
-                <div>
-                    <form onSubmit={this.registerNewClient}>
-                        <input type="text" name="username" placeholder="Name" autoFocus />
-                        <input type="password" name="password" placeholder="Password" />
-                        <button type="submit">Register</button>
-                    </form>
+                <title>Chat App | Client</title>
+                <nav className="navbar navbar-dark bg-dark">
+                    <a className="navbar-brand" style={{ color: 'white' }}>Chat App | New Client</a>
+                </nav>
+                <div className="container">
+                    <div className="row justify-content-center">
+                        <h3>Already a user?</h3>
+                    </div>
+                    <div className="row justify-content-center">
+                        <button className="btn btn-success" onClick={this.goToLogin}>Login</button>
+                    </div>
+                    <div className="row justify-content-center">
+                        <h3>New Users Register Below</h3>
+                    </div>
+                    <div>
+                        <form onSubmit={this.registerNewClient}>
+                            <div className="row justify-content-center">
+                                <input type="text" name="username" placeholder="Name" autoFocus autoComplete="off" />
+                            </div>
+                            <div className="row justify-content-center">
+                                <input type="password" name="password" placeholder="Password" />
+                            </div>
+                            <div className="row justify-content-center">
+                                <button className="btn btn-primary" type="submit">Register</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         );

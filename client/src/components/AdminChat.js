@@ -80,9 +80,11 @@ class AdminChat extends React.Component{
         )
         return (
             <div>
-                <title>Chat App | Admin Chat</title>
-                <h1>This is the Admin Chat page</h1>
-                <h3>List of users</h3>
+                <title>Chat App | Client Login</title>
+                <nav className="navbar navbar-dark bg-dark">
+                    <a className="navbar-brand" style={{ color: 'white' }}>Chat App | Admin Chat</a>
+                </nav>
+                {/* <h3>List of users</h3> */}
                 <ul onClick={this.handleClick}>{userList}</ul>
                 <div>
                     <h3>Admin messages</h3>

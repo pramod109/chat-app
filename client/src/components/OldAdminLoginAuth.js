@@ -23,7 +23,8 @@ class OldAdminLoginAuth extends React.Component{
 
             const postData = {
                 name: username,
-                password: password
+                password: password,
+                isAdmin: true
             }
 
             axios.post('/authenticate', postData)
@@ -32,7 +33,7 @@ class OldAdminLoginAuth extends React.Component{
                     if(res.data.success){
                         self.setState({authorized: true, token: res.data.token, userName:username});
                     }else{
-                        alert("Wrong username/password combination!!!")
+                        alert(res.data.message)
                     }
                     
                     console.log(self.state.authorized);
@@ -56,12 +57,21 @@ class OldAdminLoginAuth extends React.Component{
 
         return (
             <div>
-                <h2>This is the Admin login page</h2>
-                <div>
+                <title>Chat App | Admin Login</title>
+                <nav className="navbar navbar-dark bg-dark">
+                    <a className="navbar-brand" style={{ color: 'white' }}>Chat App | Admin Login</a>
+                </nav>
+                <div className="container">
                     <form onSubmit={this.loginOldAdmin}>
+                    <div className="row justify-content-center">
                         <input type="text" name="username" placeholder="Name" autoFocus />
+                    </div>    
+                    <div className="row justify-content-center">    
                         <input type="password" name="password" placeholder="Password" />
-                        <button type="submit">Login</button>
+                    </div>    
+                    <div className="row justify-content-center">    
+                        <button className="btn btn-success" type="submit">Login</button>
+                    </div>
                     </form>
                 </div>
             </div>

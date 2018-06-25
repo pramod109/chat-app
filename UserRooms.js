@@ -8,16 +8,19 @@ class UserRooms{
         this.userRooms = [
             {
                 name: 'Test room 1',
+                id:'',
                 users: [],
                 messages: []
             },
             {
                 name: 'Test room 2',
+                id:'',
                 users: [],
                 messages: []
             },
             {
                 name: 'Test room 3',
+                id:'',
                 users: [],
                 messages: []
             }
@@ -32,10 +35,15 @@ class UserRooms{
         return this.userRooms.find(room => room.name === roomName);
     }
 
-    addUserRoom(roomName){
+    getRoomById(id){
+        return this.userRooms.find(room => room.id === id);
+    }
+
+    addUserRoom(roomName, id){
         if(!this.userRooms.find(room => room.name === roomName)){
             this.userRooms.push({
                 name: roomName,
+                id: id,
                 users: [],
                 messages: []
             })

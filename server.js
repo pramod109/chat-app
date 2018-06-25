@@ -72,9 +72,24 @@ app.post('/authenticate', function(req, res) {
 			if(!bcrypt.compareSync(req.body.password,user.password)) {
 				res.json({success: false, message: 'Authentication failed, invalid password'});
 			}
-			else {
+			else if(req.body.isAdmin === user.admin && bcrypt.compareSync(req.body.password,user.password)){
 				const payload = {
-					admin: user.admin
+					name: user.name
+				};
+
+				var token = jwt.sign(payload, app.get('superSecret'), {
+					expiresIn: 1440
+				});
+
+				res.json({
+					success: true,
+					message: 'Please use this token',
+					token: token
+				})
+			}
+			else if( !req.body.isAdmin && bcrypt.compareSync(req.body.password,user.password)) {
+				const payload = {
+					name: user.name
 				};
 
 				var token = jwt.sign(payload, app.get('superSecret'), {
@@ -86,6 +101,12 @@ app.post('/authenticate', function(req, res) {
 					message: 'Please use this token',
 					token: token
 				});
+			}
+			else{
+				res.json({
+					success: false,
+					message: 'Clients cannot login into the Admin System'
+				})
 			}
 		}
 	});
@@ -121,17 +142,27 @@ app.post('/verify', function(req, res) {
 
 //socket connections and events
 io.on('connection', function(socket){
-	console.log("A user connected...")
+	console.log("A user connected..." + socket.id)
 	
 	socket.on('disconnect', function(){
-		console.log("User disconnected...")
+		console.log("User disconnected..." +socket.id)
+		const room = user_rooms.getRoomById(socket.id);
+
+		if(room){
+			user_rooms.removeUserRoom(room.name);
+			io.emit('update user rooms admin',user_rooms.getUserRooms());
+		}
+		
 	});
 	
 	socket.on('chat message', function(data){
 		
 		const room = user_rooms.getUserRoom(data.roomName);
-		room.messages.push(data.message);
-		io.emit('chat message', data);
+		if (room){
+			room.messages.push(data.message);
+			io.emit('chat message', data);
+		}
+		
 		console.log(user_rooms.getUserRooms());
 	});
 
@@ -140,7 +171,7 @@ io.on('connection', function(socket){
 	})
 
 	socket.on('create room', function(roomName){
-		user_rooms.addUserRoom(roomName);
+		user_rooms.addUserRoom(roomName, socket.id);
 		user_rooms.addUser(roomName, roomName);
 		io.emit('update user rooms', user_rooms.getUserRooms());
 		console.log(user_rooms.getUserRooms());

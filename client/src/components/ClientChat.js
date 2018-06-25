@@ -53,16 +53,21 @@ class ClientChat extends React.Component{
 
         return (
             <div>
-                <title>Chat App | Client Chat</title>
-                <h1>This is the client chat page</h1>
-                <div>
-                    <form onSubmit={this.sendMessage}>
-                        <h3>Client Chat</h3>
-                        <ul>{messageList}</ul>
-                        <p>This room belongs to: {this.props.userName}</p>
-                        <input type="text" name="userMessage" autoFocus autoComplete="off" />
-                        <button type="submit">Join</button> 
-                    </form>
+                <title>Chat App | Client Login</title>
+                <nav className="navbar navbar-dark bg-dark">
+                    <a className="navbar-brand" style={{ color: 'white' }}>Chat App | Client Chat</a>
+                </nav>
+                <div className="container">
+                    <div className="row">
+                        <ul id="chatMessages">{messageList}</ul>
+                    </div>
+                    <div className="row">
+                        <form id="chatForm" onSubmit={this.sendMessage}>
+                            {/* <p>This room belongs to: {this.props.userName}</p> */}
+                            <input type="text" name="userMessage" autoFocus autoComplete="off" />
+                            <button className="btn btn-success" type="submit">Send</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         );
