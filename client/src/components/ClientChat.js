@@ -6,21 +6,34 @@ This is the component to display and handle client chat
 import React from 'react';
 import { socketEmit, socketOn } from '../helpers/socketEvents';
 import axios from 'axios';
+import Messages from './Messages';
+import HomePage from './HomePage';
 
 class ClientChat extends React.Component{
     constructor(){
         super();
 
         this.state = {
+            loggedOut: false,
             messages: []
         };
+
+        this.scrollToBottom = () => {
+            this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+        }
         
+        this.logout = () => {
+            this.setState({loggedOut: true});
+            window.location.reload();
+        }
+
         socketOn.chatMessage((data) => {
 
             if(data.roomName === this.props.userName){
                 const newMessages = this.state.messages.slice();
                 newMessages.push(data.message);
                 this.setState({messages: newMessages});
+                this.scrollToBottom();
             }
         })
 
@@ -46,26 +59,37 @@ class ClientChat extends React.Component{
     }
 
     render(){
-        const thisMessages = this.state.messages;
-        const messageList = thisMessages.map((message) => 
-            <li key={message.toString()}>{message}</li>
-        )
-
+        if(this.state.loggedOut){
+            return (
+                <HomePage />
+            )
+        }
         return (
             <div>
                 <title>Chat App | Client Login</title>
                 <nav className="navbar navbar-dark bg-dark">
                     <a className="navbar-brand" style={{ color: 'white' }}>Chat App | Client Chat</a>
+                    <button className="btn btn-danger pull-right" onClick={this.logout}>Logout</button>
                 </nav>
-                <div className="container">
-                    <div className="row">
-                        <ul id="chatMessages">{messageList}</ul>
+                <div className="container-fluid">
+                    <div className="container-fluid" id="clientMessages">
+                        <Messages messages={this.state.messages} />
+
+                        <div style={{ float: "left", clear: "both" }}
+                            ref={(el) => { this.messagesEnd = el; }}>
+                        </div>
+
                     </div>
-                    <div className="row">
+                    <div className="container-fluid">
                         <form id="chatForm" onSubmit={this.sendMessage}>
-                            {/* <p>This room belongs to: {this.props.userName}</p> */}
-                            <input type="text" name="userMessage" autoFocus autoComplete="off" />
-                            <button className="btn btn-success" type="submit">Send</button>
+                            <div className="form-row">
+                                <div className="form-group col-11 ">
+                                    <input type="text" className="form-control border-dark" name="userMessage" autoComplete="off" autoFocus required />
+                                </div>
+                                <div className="form-group col-1">
+                                    <button className="btn btn-success border-dark" type="submit">Send</button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

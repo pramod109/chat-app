@@ -2,19 +2,18 @@ body{
     background-color: lightblue;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
 }
-#chatMessages{
+#clientMessages{
+    height: 81vh;
+    overflow-y: scroll
+}
+#userList{
     list-style-type: none;
-    padding: 1px 1px;
 }
-#chatMessages li{
-    background: #eee;
+#userList li{
     border-radius: 4px;
-    padding: 1px 1px;
-}
-#chatForm{
-    position: fixed;
-    bottom: 0; 
-    width: 100%;
+    cursor: pointer;
+    background-color: #EEE;
+    margin-bottom: 2px;
 }
 
 /* * { margin: 0; padding: 0; box-sizing: border-box; }
