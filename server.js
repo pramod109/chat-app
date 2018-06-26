@@ -19,6 +19,7 @@ const user = require('./models/user');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
 const port = process.env.PORT || 3001;
+const path = require('path');
 
 mongoose.connect(config.database, () => {
 	console.log('Successfully connected to mongodb database...');
