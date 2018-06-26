@@ -18,6 +18,7 @@ const config = require('./config');
 const user = require('./models/user');
 const cors = require('cors');
 const bcrypt = require('bcrypt');
+const port = process.env.PORT || 3001;
 
 mongoose.connect(config.database, () => {
 	console.log('Successfully connected to mongodb database...');
@@ -30,15 +31,6 @@ app.use(morgan('dev'));
 
 const apiRoutes = express.Router();
 app.use(cors());
-
-if (process.env.NODE_ENV === 'production') {
-	// Serve any static files
-	app.use(express.static(path.join(__dirname, 'client/build')));
-	// Handle React routing, return all requests to React app
-	app.get('*', function (req, res) {
-		res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-	});
-}
 
 //Route to register new client
 app.post('/registerNewClient', function(req, res) {
@@ -149,6 +141,15 @@ app.post('/verify', function(req, res) {
 	}
 });
 
+if (process.env.NODE_ENV === 'production') {
+	// Serve any static files
+	app.use(express.static(path.join(__dirname, 'client')));
+	// Handle React routing, return all requests to React app
+	app.get('*', function (req, res) {
+		res.sendFile(path.join(__dirname, 'client', 'index.html'));
+	});
+}
+
 //socket connections and events
 io.on('connection', function(socket){
 	console.log("A user connected..." + socket.id)
@@ -193,4 +194,4 @@ io.on('connection', function(socket){
 	});
 });
 
-server.listen(3001,()=>{console.log('Server active on 3001...')});
+server.listen(port,()=>{console.log('Server active on 3001...')});
