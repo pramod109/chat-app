@@ -30,7 +30,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
-const apiRoutes = express.Router();
 app.use(cors());
 
 //creating an admin user if it does not exists [Immediately invoked function]
@@ -54,10 +53,10 @@ app.use(cors());
 
 //Route to register new client
 app.post('/registerNewClient', function(req, res) {
-
+	//Tries to find user with input name
 	user.findOne({name: req.body.name}, function (err, data) {
 		if(err) throw err;
-
+		
 		if (!data) {
 			const hash_password = bcrypt.hashSync(req.body.password, 8);
 			var newClient = new user({
@@ -71,6 +70,7 @@ app.post('/registerNewClient', function(req, res) {
 				res.json({ success: true })
 			})
 		}
+		//If user with name already exists
 		else if(data){
 			res.json({success: false});
 		}
@@ -79,7 +79,7 @@ app.post('/registerNewClient', function(req, res) {
 
 //Route to authenticate old user (admin OR client)
 app.post('/authenticate', function(req, res) {
-
+	//Tries to find user with input name
 	user.findOne({
 		name: req.body.name
 	}, function(err, user) {
@@ -89,10 +89,11 @@ app.post('/authenticate', function(req, res) {
 			res.json({success:false, message: 'Authentication failed, User not found'});
 		}
 		else if(user) {
-			
+			//If password is incorrect
 			if(!bcrypt.compareSync(req.body.password,user.password)) {
 				res.json({success: false, message: 'Authentication failed, invalid password'});
 			}
+			//If password is correct and user is Admin
 			else if(req.body.isAdmin === user.admin && bcrypt.compareSync(req.body.password,user.password)){
 				const payload = {
 					name: user.name
@@ -108,6 +109,7 @@ app.post('/authenticate', function(req, res) {
 					token: token
 				})
 			}
+			//If password is correct and User is not an Admin
 			else if( !req.body.isAdmin && bcrypt.compareSync(req.body.password,user.password)) {
 				const payload = {
 					name: user.name
@@ -123,6 +125,7 @@ app.post('/authenticate', function(req, res) {
 					token: token
 				});
 			}
+			//If client try to login Admin system
 			else{
 				res.json({
 					success: false,
@@ -133,7 +136,7 @@ app.post('/authenticate', function(req, res) {
 	});
 });
 
-//route middleware to verify a token
+//route to verify a token
 app.post('/verify', function(req, res) {
 
 	//check post params for token
@@ -161,6 +164,7 @@ app.post('/verify', function(req, res) {
 	}
 });
 
+//heroku deployment
 if (process.env.NODE_ENV === 'production') {
 	// Serve any static files
 	app.use(express.static(path.join(__dirname, 'client/build')));
@@ -184,7 +188,8 @@ io.on('connection', function(socket){
 		}
 		
 	});
-	
+
+	//when clients/admin sends a message
 	socket.on('chat message', function(data){
 		
 		const room = user_rooms.getUserRoom(data.roomName);
@@ -196,10 +201,12 @@ io.on('connection', function(socket){
 		//console.log(user_rooms.getUserRooms());
 	});
 
+	//when admin requests for total users data
 	socket.on('get users', function(){
 		io.emit('update user rooms admin',user_rooms.getUserRooms());
 	})
 
+	//when new client logs in
 	socket.on('create room', function(roomName){
 		user_rooms.addUserRoom(roomName, socket.id);
 		user_rooms.addUser(roomName, roomName);
@@ -207,6 +214,7 @@ io.on('connection', function(socket){
 		//console.log(user_rooms.getUserRooms());
 	})
 
+	//when admin requests for user messages
 	socket.on('get messages', function(roomName){
 		const room = user_rooms.getUserRoom(roomName);
 		io.emit('update user messages', room.messages);
@@ -214,4 +222,4 @@ io.on('connection', function(socket){
 	});
 });
 
-server.listen(port,()=>{console.log('Server active on 3001...')});
+server.listen(port,()=>{console.log('Server active on '+ port)});

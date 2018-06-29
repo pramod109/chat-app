@@ -11,18 +11,6 @@ class UserRooms{
                 id:'',
                 users: [],
                 messages: []
-            },
-            {
-                name: 'Test room 2',
-                id:'',
-                users: [],
-                messages: []
-            },
-            {
-                name: 'Test room 3',
-                id:'',
-                users: [],
-                messages: []
             }
         ];
     }
