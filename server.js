@@ -33,6 +33,25 @@ app.use(morgan('dev'));
 const apiRoutes = express.Router();
 app.use(cors());
 
+//creating an admin user if it does not exists [Immediately invoked function]
+(() => {
+	var admin = new user({
+		name: 'admin',
+		password: bcrypt.hashSync('password', 8),
+		admin: true
+	})
+	user.findOne({
+		name: 'admin'
+	}, function(err, admin) {
+		if (!admin){
+			admin.save(function(err) {
+				if (err) throw err;
+				console.log('Admin account added successfully...');
+			})
+		}
+	})
+})
+
 //Route to register new client
 app.post('/registerNewClient', function(req, res) {
 
@@ -153,10 +172,10 @@ if (process.env.NODE_ENV === 'production') {
 
 //socket connections and events
 io.on('connection', function(socket){
-	console.log("A user connected..." + socket.id)
+	//console.log("A user connected..." + socket.id)
 	
 	socket.on('disconnect', function(){
-		console.log("User disconnected..." +socket.id)
+		//console.log("User disconnected..." +socket.id)
 		const room = user_rooms.getRoomById(socket.id);
 
 		if(room){
@@ -174,7 +193,7 @@ io.on('connection', function(socket){
 			io.emit('chat message', data);
 		}
 		
-		console.log(user_rooms.getUserRooms());
+		//console.log(user_rooms.getUserRooms());
 	});
 
 	socket.on('get users', function(){
@@ -185,13 +204,13 @@ io.on('connection', function(socket){
 		user_rooms.addUserRoom(roomName, socket.id);
 		user_rooms.addUser(roomName, roomName);
 		io.emit('update user rooms', user_rooms.getUserRooms());
-		console.log(user_rooms.getUserRooms());
+		//console.log(user_rooms.getUserRooms());
 	})
 
 	socket.on('get messages', function(roomName){
 		const room = user_rooms.getUserRoom(roomName);
 		io.emit('update user messages', room.messages);
-		console.log(room.messages);
+		//console.log(room.messages);
 	});
 });
 

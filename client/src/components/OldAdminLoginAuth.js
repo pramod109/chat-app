@@ -64,10 +64,10 @@ class OldAdminLoginAuth extends React.Component{
                 <div className="container">
                     <form onSubmit={this.loginOldAdmin}>
                     <div className="row justify-content-center">
-                        <input type="text" name="username" placeholder="Name" autoFocus />
+                        <input type="text" name="username" placeholder="Name" autoFocus minLength="1" maxLength="15" required />
                     </div>    
                     <div className="row justify-content-center">    
-                        <input type="password" name="password" placeholder="Password" />
+                        <input type="password" name="password" placeholder="Password" minLength="1" maxLength="15" required/>
                     </div>    
                     <div className="row justify-content-center">    
                         <button className="btn btn-success" type="submit">Login</button>

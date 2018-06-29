@@ -118,7 +118,7 @@ class AdminChat extends React.Component{
 
                                     <div className="form-row">
                                         <div className="form-group col-11 ">
-                                            <input type="text" className="form-control border-dark" name="adminMessage" autoComplete="off" autoFocus required />
+                                            <input type="text" className="form-control border-dark" name="adminMessage" autoComplete="off" autoFocus required minLength="1" maxLength="60" />
                                         </div>
                                         <div className="form-group col-1">
                                             <button className="btn btn-success border-dark" type="submit">Send</button>

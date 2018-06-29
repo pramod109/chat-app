@@ -69,10 +69,10 @@ class NewClientRegisterAuth extends React.Component{
                     <div>
                         <form onSubmit={this.registerNewClient}>
                             <div className="row justify-content-center">
-                                <input type="text" name="username" placeholder="Name" autoFocus autoComplete="off" />
+                                <input type="text" name="username" placeholder="Name" autoFocus autoComplete="off" minLength="1" maxLength="15" required />
                             </div>
                             <div className="row justify-content-center">
-                                <input type="password" name="password" placeholder="Password" />
+                                <input type="password" name="password" placeholder="Password" minLength="1" maxLength="15" required/>
                             </div>
                             <div className="row justify-content-center">
                                 <button className="btn btn-primary" type="submit">Register</button>
