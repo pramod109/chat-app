@@ -29,6 +29,14 @@ npm install
 yarn dev
 ```
 
+### Testing
+
+After the build is successful, run the following command to test the server
+
+```
+npm test
+```
+
 ## Built With
 
 * [React] (https://reactjs.org/) - Front end framework
@@ -38,6 +46,7 @@ yarn dev
 * [Socket.IO] (https://socket.io/) - Real time bidirectional event based communication
 * [MongoDB] (https://www.mongodb.com/) - NOSQL Document based database
 * [jsonwebtoken] (https://www.npmjs.com/package/jsonwebtoken) - Implementation of JSON Web Tokens
+* [Mocha] (https://mochajs.org/) - JavaScript test framework based on NodeJS
 
 ## Authors
 
