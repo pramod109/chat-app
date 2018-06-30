@@ -33,8 +33,8 @@ app.use(morgan('dev'));
 app.use(cors());
 
 //creating an admin user if it does not exists [Immediately invoked function]
-(() => {
-	var admin = new user({
+(function() {
+	var adminUser = new user({
 		name: 'admin',
 		password: bcrypt.hashSync('password', 8),
 		admin: true
@@ -42,8 +42,9 @@ app.use(cors());
 	user.findOne({
 		name: 'admin'
 	}, function(err, admin) {
+		if(err) throw err;
 		if (!admin){
-			admin.save(function(err) {
+			adminUser.save(function(err) {
 				if (err) throw err;
 				console.log('Admin account added successfully...');
 			})
@@ -176,10 +177,10 @@ if (process.env.NODE_ENV === 'production') {
 
 //socket connections and events
 io.on('connection', function(socket){
-	//console.log("A user connected..." + socket.id)
+	console.log("A user connected..." + socket.id)
 	
 	socket.on('disconnect', function(){
-		//console.log("User disconnected..." +socket.id)
+		console.log("User disconnected..." +socket.id)
 		const room = user_rooms.getRoomById(socket.id);
 
 		if(room){
