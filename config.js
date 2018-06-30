@@ -7,5 +7,5 @@ This file handles the database and JWT configurations
 
 module.exports = {
     'secret' : 'chatappsecret',
-    'database' : 'mongodb://<dbusername>:<dbuserpassword>@ds163870.mlab.com:63870/<dbname>'
+    'database' : 'mongodb://pramod:pramod321@ds163870.mlab.com:63870/chat-app'
 }

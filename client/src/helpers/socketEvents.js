@@ -7,7 +7,7 @@ import socketIOClient from 'socket.io-client';
 
 // 'http://localhost:3001' for local dev
 // '/' for production
-const socket = socketIOClient('http://localhost:3001');
+const socket = socketIOClient('/');
 
 const socketOn = {
     chatMessage: (callback) => {
