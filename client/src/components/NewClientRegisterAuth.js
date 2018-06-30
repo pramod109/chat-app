@@ -21,25 +21,22 @@ class NewClientRegisterAuth extends React.Component{
             e.preventDefault();
             const username = e.target.elements.username.value;
             const password = e.target.elements.password.value;
-
             const postData = {
                 name: username,
                 password: password
             }
-
             axios.post('/registerNewClient', postData)
                 .then( (res) => {
-                    console.log(res);
-                    console.log(res.success);
+                    //console.log(res);
+                    //console.log(res.success);
                     if(res.data.success){
                         self.setState({isOldClient: true});
                     }else{
                         alert("Please choose a unique name. This name is already taken...")
-                    }
-                    
+                    }                    
                 })
                 .catch(function(err) {
-                    console.log(err);
+                    //console.log(err);
                 }
             )
         }

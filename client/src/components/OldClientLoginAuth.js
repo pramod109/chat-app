@@ -27,7 +27,6 @@ class OldClientLoginAuth extends React.Component{
                 password: password,
                 isAdmin: false
             }
-
             axios.post('/authenticate', postData)
                 .then((res) => {
                     console.log(res);
@@ -41,9 +40,9 @@ class OldClientLoginAuth extends React.Component{
                     }else{
                         alert(res.data.message)
                     }                    
-                    console.log(self.state.authorized);
-                    console.log(self.state.token);
-                    console.log(self.state.userName);
+                    //console.log(self.state.authorized);
+                    //console.log(self.state.token);
+                    //console.log(self.state.userName);
                 }) 
                 .catch((err) => {
                     console.log(err);

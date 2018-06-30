@@ -14,27 +14,21 @@ class HomePage extends React.Component{
         this.handleAdminClick = this.handleAdminClick.bind(this);
         this.state = {currStatus: 'none'};
     }
-
     handleClientClick(){
         this.setState({currStatus: 'client'});
     }
-
     handleAdminClick(){
         this.setState({currStatus: 'admin'});
     }
-
     render(){
 
         const currStatus = this.state.currStatus;
-
         if(currStatus === 'client'){
             return <NewClientRegisterAuth />
         }
-
         if(currStatus === 'admin'){
             return <OldAdminLoginAuth />
         }
-
         return(
             <div>
                 <title>Chat App | Home</title>
@@ -42,7 +36,6 @@ class HomePage extends React.Component{
                     <a className="navbar-brand" style={{color:'white'}}>Chat App</a>
                 </nav>
                 <div className="container">
-
                     <div className="row justify-content-center">
                         <h3>Please choose one:</h3>
                     </div>

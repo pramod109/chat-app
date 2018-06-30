@@ -1,3 +1,8 @@
+/* 
+Developed by Pramod Hanagandi -[pramod109.github.io]
+This file handles the socket.io events
+*/
+
 import socketIOClient from 'socket.io-client';
 
 // 'http://localhost:3001' for local dev

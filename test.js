@@ -1,3 +1,8 @@
+/* 
+Developed by Pramod Hanagandi -[pramod109.github.io]
+This file handles the testing of server APIs
+*/
+
 const assert = require('assert');
 const supertest = require('supertest');
 const should = require('should');

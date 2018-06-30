@@ -12,48 +12,37 @@ import HomePage from './HomePage';
 class ClientChat extends React.Component{
     constructor(){
         super();
-
         this.state = {
             loggedOut: false,
             messages: []
         };
-
         this.scrollToBottom = () => {
             this.messagesEnd.scrollIntoView({ behavior: "smooth" });
-        }
-        
+        }        
         this.logout = () => {
             this.setState({loggedOut: true});
             window.location.reload();
         }
-
         socketOn.chatMessage((data) => {
-
             if(data.roomName === this.props.userName){
                 const newMessages = this.state.messages.slice();
                 newMessages.push(data.message);
                 this.setState({messages: newMessages});
                 this.scrollToBottom();
             }
-        })
-
+        });
         this.sendMessage = (e) => {
-            e.preventDefault();
-            
+            e.preventDefault();            
             const userMessage = this.props.userName + ' : ' + e.target.elements.userMessage.value.trim();
-
             axios.post('/verify', {token:this.props.token})
                 .then((res) => {
                     console.log(res);
-                    socketEmit.chatMessage({roomName:this.props.userName,message:userMessage}, (err) => {
-                
-                    });
+                    socketEmit.chatMessage({roomName:this.props.userName,message:userMessage}, (err) => {});
                 })
                 .catch((err) => {
                     console.log(err);
                 }
             )
-
             e.target.elements.userMessage.value = '';
         };
     }
@@ -66,7 +55,7 @@ class ClientChat extends React.Component{
         }
         return (
             <div>
-                <title>Chat App | Client Login</title>
+                <title>Chat App | Client Chat</title>
                 <nav className="navbar navbar-dark bg-dark">
                     <a className="navbar-brand" style={{ color: 'white' }}>Chat App | Client Chat</a>
                     <button className="btn btn-danger pull-right" onClick={this.logout}>Logout</button>
@@ -74,11 +63,9 @@ class ClientChat extends React.Component{
                 <div className="container-fluid">
                     <div className="container-fluid" id="clientMessages">
                         <Messages messages={this.state.messages} />
-
                         <div style={{ float: "left", clear: "both" }}
                             ref={(el) => { this.messagesEnd = el; }}>
                         </div>
-
                     </div>
                     <div className="container-fluid">
                         <form id="chatForm" onSubmit={this.sendMessage}>

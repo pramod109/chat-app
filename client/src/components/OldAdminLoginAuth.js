@@ -20,13 +20,11 @@ class OldAdminLoginAuth extends React.Component{
             e.preventDefault();
             const username = e.target.elements.username.value;
             const password = e.target.elements.password.value;
-
             const postData = {
                 name: username,
                 password: password,
                 isAdmin: true
             }
-
             axios.post('/authenticate', postData)
                 .then((res) => {
                     console.log(res);
@@ -34,11 +32,10 @@ class OldAdminLoginAuth extends React.Component{
                         self.setState({authorized: true, token: res.data.token, userName:username});
                     }else{
                         alert(res.data.message)
-                    }
-                    
-                    console.log(self.state.authorized);
-                    console.log(self.state.token);
-                    console.log(self.state.userName);
+                    }                    
+                    //console.log(self.state.authorized);
+                    //console.log(self.state.token);
+                    //console.log(self.state.userName);
                 }) 
                 .catch((err) => {
                     console.log(err);

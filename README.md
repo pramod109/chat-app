@@ -14,7 +14,7 @@ git clone https://github.com/pramod109/chat-app.git
 
 ### Prerequisites
 
-After downloading the repository, run the following commands in the root folder
+After downloading the repository, run the following command in the root folder
 
 ```
 npm install yarn -g
@@ -22,7 +22,7 @@ npm install yarn -g
 
 ### Installing
 
-After installing yarn, in the root folder run the following command to build locally
+After installing yarn, in the root folder run the following commands to build locally
 
 ```
 npm install
