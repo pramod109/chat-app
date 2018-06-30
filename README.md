@@ -55,3 +55,8 @@ npm test
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Screenshot
+
+![chat-app-screenshot](https://user-images.githubusercontent.com/25020379/42120592-717f65b0-7be3-11e8-97da-8153573d98b5.png)
+
