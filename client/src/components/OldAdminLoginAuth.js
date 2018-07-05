@@ -60,15 +60,21 @@ class OldAdminLoginAuth extends React.Component{
                 </nav>
                 <div className="container">
                     <form onSubmit={this.loginOldAdmin}>
-                    <div className="row justify-content-center">
-                        <input type="text" name="username" placeholder="Name" autoFocus minLength="1" maxLength="15" required />
-                    </div>    
-                    <div className="row justify-content-center">    
-                        <input type="password" name="password" placeholder="Password" minLength="1" maxLength="15" required/>
-                    </div>    
-                    <div className="row justify-content-center">    
-                        <button className="btn btn-success" type="submit">Login</button>
-                    </div>
+                        <div className="row justify-content-center">
+                            <div className="form-group">
+                                <input type="text" name="username" placeholder="Name" autoFocus minLength="1" maxLength="15" required />
+                            </div>
+                        </div>
+                        <div className="row justify-content-center">
+                            <div className="form-group">
+                                <input type="password" name="password" placeholder="Password" minLength="1" maxLength="15" required />
+                            </div>
+                        </div>
+                        <div className="row justify-content-center">
+                            <div className="form-group">
+                                <button className="btn btn-success" type="submit">Login</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
