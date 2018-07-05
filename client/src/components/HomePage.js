@@ -40,10 +40,15 @@ class HomePage extends React.Component{
                         <h3>Please choose one:</h3>
                     </div>
                     <div className="row justify-content-center">
-                        <button type="button" className="btn btn-primary btn-lg" onClick={this.handleClientClick}>Client</button>
-                        <button type="button" className="btn btn-primary btn-lg" onClick={this.handleAdminClick}>Admin</button>
+                        <form>
+                            <div className="form-group">
+                                <button type="button" className="btn btn-primary btn-lg" onClick={this.handleClientClick}>Client</button>
+                            </div>
+                            <div className="form-group">
+                                <button type="button" className="btn btn-primary btn-lg" onClick={this.handleAdminClick}>Admin</button>
+                            </div>
+                        </form>
                     </div>
-
                 </div>
             </div>
         );
