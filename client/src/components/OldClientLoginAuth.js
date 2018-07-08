@@ -62,9 +62,9 @@ class OldClientLoginAuth extends React.Component{
             <div>
                 <title>Chat App | Client Login</title>
                 <nav className="navbar navbar-dark bg-dark">
-                    <a className="navbar-brand" style={{ color: 'white' }}>Chat App | Client Login</a>
+                    <a className="navbar-brand">Chat App | Client Login</a>
                 </nav>
-                <div className="container">
+                <div className="container inner-container">
                     <form onSubmit={this.loginOldClient}>
                         <div className="row justify-content-center">
                             <div className="form-group">

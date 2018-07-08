@@ -56,9 +56,9 @@ class OldAdminLoginAuth extends React.Component{
             <div>
                 <title>Chat App | Admin Login</title>
                 <nav className="navbar navbar-dark bg-dark">
-                    <a className="navbar-brand" style={{ color: 'white' }}>Chat App | Admin Login</a>
+                    <a className="navbar-brand">Chat App | Admin Login</a>
                 </nav>
-                <div className="container">
+                <div className="container inner-container">
                     <form onSubmit={this.loginOldAdmin}>
                         <div className="row justify-content-center">
                             <div className="form-group">

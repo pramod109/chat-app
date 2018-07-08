@@ -33,12 +33,9 @@ class HomePage extends React.Component{
             <div>
                 <title>Chat App | Home</title>
                 <nav className="navbar navbar-dark bg-dark">
-                    <a className="navbar-brand" style={{color:'white'}}>Chat App</a>
+                    <a className="navbar-brand">Chat App</a>
                 </nav>
-                <div className="container">
-                    <div className="row justify-content-center">
-                        <h3>Please choose one:</h3>
-                    </div>
+                <div className="container inner-container">
                     <div className="row justify-content-center">
                         <form>
                             <div className="form-group">

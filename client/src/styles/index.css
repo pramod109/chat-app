@@ -1,6 +1,12 @@
 body{
-    background-color: rgb(221, 221, 221);
+    background-color:ghostwhite;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+}
+.navbar{
+    color: whitesmoke;
+}
+.inner-container{
+    margin-top: 15vh;
 }
 #clientMessages{
     height: 81vh;
@@ -8,10 +14,21 @@ body{
 }
 #userList{
     list-style-type: none;
+    height: 81vh;
+    overflow-y: scroll
 }
 #userList li{
-    border-radius: 4px;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid black;
     cursor: pointer;
-    background-color: #EEE;
+    background-color: lightcyan;
+    margin-top: 2px;
     margin-bottom: 2px;
+}
+.card{
+    border-radius: 8px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    border: 1px solid gainsboro;
 }
