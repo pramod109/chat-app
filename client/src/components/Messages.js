@@ -12,9 +12,9 @@ class Messages extends React.Component{
     }
 
     render(){
-        const messageCards = this.props.messages.map((message) => {
+        const messageCards = this.props.messages.map((message,index) => {
             return (
-                <MessageCard message={message} />
+                <MessageCard key={index} message={message} />
             )
         })
         return (

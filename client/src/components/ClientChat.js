@@ -57,7 +57,7 @@ class ClientChat extends React.Component{
             <div>
                 <title>Chat App | Client Chat</title>
                 <nav className="navbar navbar-dark bg-dark">
-                    <a className="navbar-brand" style={{ color: 'white' }}>Chat App | Client Chat</a>
+                    <a className="navbar-brand">Chat App | Client Chat</a>
                     <button className="btn btn-danger pull-right" onClick={this.logout}>Logout</button>
                 </nav>
                 <div className="container-fluid">

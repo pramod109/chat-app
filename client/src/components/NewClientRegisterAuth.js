@@ -51,17 +51,17 @@ class NewClientRegisterAuth extends React.Component{
             <div>
                 <title>Chat App | Client</title>
                 <nav className="navbar navbar-dark bg-dark">
-                    <a className="navbar-brand" style={{ color: 'white' }}>Chat App | New Client</a>
+                    <a className="navbar-brand">Chat App | New Client</a>
                 </nav>
-                <div className="container">
+                <div className="container inner-container">
                     <div className="row justify-content-center">
-                        <h3>Already a user?</h3>
+                        <h6>Already a user?</h6>
                     </div>
                     <div className="row justify-content-center">
                         <button className="btn btn-success" onClick={this.goToLogin}>Login</button>
                     </div>
                     <div className="row justify-content-center">
-                        <h3>New Users Register Below</h3>
+                        <h6>New Users Register Below</h6>
                     </div>
                     <div>
                         <form onSubmit={this.registerNewClient}>
